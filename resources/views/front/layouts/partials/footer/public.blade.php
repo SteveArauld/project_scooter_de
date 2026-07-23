@@ -4,7 +4,7 @@
 
             <!-- Marke -->
             <div class="col-lg-4 col-md-12">
-                <img src="{{ asset('assets/images/logo/freshcart-logo.svg') }}" alt="{{ config('shop.name') }}" height="46" class="mb-3" />
+                <img src="{{ asset('assets/images/logo/freshcart-logo.png') }}" alt="{{ config('shop.name') }}" height="46" class="mb-3" />
                 <p class="text-muted">
                     Ihr Spezialist für Elektroroller und E-Scooter. Straßenzugelassen, geprüft und fahrfertig
                     geliefert – mit kostenlosem Versand in ganz Deutschland.

@@ -11,7 +11,7 @@
 --}}
 @php
     $accent = $accent ?? '#0d6efd';
-    $logo = rtrim(config('app.url'), '/') . '/assets/images/logo/freshcart-logo.svg';
+    $logo = rtrim(config('app.url'), '/') . '/assets/images/logo/freshcart-logo.png';
     $shopName = config('shop.name');
 @endphp
 <!DOCTYPE html>

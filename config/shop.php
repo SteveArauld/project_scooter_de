@@ -13,8 +13,8 @@
 */
 
 return [
-    'name'      => env('SHOP_NAME', 'E-Roller Shop'),
-    'legal_name'=> env('SHOP_LEGAL_NAME', 'E-Roller Shop GmbH'),
+    'name'      => env('SHOP_NAME', 'Voltscoot'),
+    'legal_name'=> env('SHOP_LEGAL_NAME', 'Voltscoot GmbH'),
     'ceo'       => env('SHOP_CEO', 'Max Mustermann'),
 
     'street'    => env('SHOP_STREET', 'Friedrichstraße 100'),
@@ -22,11 +22,11 @@ return [
     'city'      => env('SHOP_CITY', 'Berlin'),
     'country'   => env('SHOP_COUNTRY', 'Deutschland'),
 
-    'email'     => env('SHOP_EMAIL', 'info@e-roller-shop.de'),
+    'email'     => env('SHOP_EMAIL', 'kontakt@voltscoot.de'),
     'phone'     => env('SHOP_PHONE', '+49 30 1234567'),
 
     // Postfach, das die Bestelleingänge erhält
-    'order_email' => env('ORDER_ADMIN_EMAIL', env('SHOP_EMAIL', 'info@e-roller-shop.de')),
+    'order_email' => env('ORDER_ADMIN_EMAIL', env('SHOP_EMAIL', 'kontakt@voltscoot.de')),
 
     'register_court' => env('SHOP_REGISTER_COURT', 'Amtsgericht Berlin-Charlottenburg'),
     'register_no'    => env('SHOP_REGISTER_NO', 'HRB 123456 B'),

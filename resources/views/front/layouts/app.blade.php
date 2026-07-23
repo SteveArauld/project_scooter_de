@@ -49,7 +49,7 @@
             '@type'     => 'OnlineStore',
             'name'      => config('shop.name'),
             'url'       => url('/'),
-            'logo'      => url('/assets/images/logo/freshcart-logo.svg'),
+            'logo'      => url('/assets/images/logo/freshcart-logo.png'),
             'email'     => config('shop.email'),
             'telephone' => config('shop.phone'),
             'address'   => [

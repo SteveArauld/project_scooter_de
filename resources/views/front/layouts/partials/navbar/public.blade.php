@@ -7,11 +7,11 @@
 				<!-- LOGO -->
 				<div class="col-xxl-2 col-lg-3 col-md-6 col-5">
 					<a class="navbar-brand d-none d-lg-block" href="{{ route('home') }}">
-						<img src="{{ asset('assets/images/logo/freshcart-logo.png') }}" alt="E-Roller Shop" height="50" />
+						<img src="{{ asset('assets/images/logo/freshcart-logo.png') }}" alt="Voltscoot" height="50" />
 					</a>
 					<div class="d-flex justify-content-between w-100 d-lg-none">
 						<a class="navbar-brand" href="{{ route('home') }}">
-							<img src="{{ asset('assets/images/logo/freshcart-logo.png') }}" alt="E-Roller Shop" height="40" />
+							<img src="{{ asset('assets/images/logo/freshcart-logo.png') }}" alt="Voltscoot" height="40" />
 						</a>
 					</div>
 				</div>
@@ -78,7 +78,7 @@
 			<div class="offcanvas offcanvas-start" tabindex="-1" id="navbar-default" aria-labelledby="navbar-defaultLabel">
 				<div class="offcanvas-header pb-1">
 					<a href="{{ route('home') }}">
-						<img src="{{ asset('assets/images/logo/freshcart-logo.png') }}" alt="E-Roller Shop" height="40" />
+						<img src="{{ asset('assets/images/logo/freshcart-logo.png') }}" alt="Voltscoot" height="40" />
 					</a>
 					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
