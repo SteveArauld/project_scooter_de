@@ -1,0 +1,158 @@
+/* =========================================================
+   Eigene Anpassungen – wird nach theme.min.css geladen
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. Breadcrumb-Trenner
+   Das Theme setzt als Fallback den Text "../../index.html".
+   Hier definieren wir die Variable, damit ein sauberer
+   Trenner statt eines Dateipfads erscheint.
+   --------------------------------------------------------- */
+:root {
+    --fc-breadcrumb-divider: "/";
+}
+
+.breadcrumb {
+    --fc-breadcrumb-divider: "/";
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "/";
+    color: #adb5bd;
+}
+
+/* ---------------------------------------------------------
+   2. Text auf Hintergrundbildern immer lesbar
+   Ein dunkler Verlauf (Scrim) liegt über dem Bild. Dadurch
+   ist heller Text unabhängig davon lesbar, ob das Bild
+   selbst hell oder dunkel ist.
+   --------------------------------------------------------- */
+.media-banner {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    isolation: isolate;
+}
+
+.media-banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    /* links dunkler, damit der Text links gut lesbar bleibt */
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.55) 45%, rgba(0, 0, 0, 0.25) 100%);
+}
+
+.media-banner > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Alle Textelemente innerhalb eines Banners hell darstellen */
+.media-banner,
+.media-banner h1,
+.media-banner h2,
+.media-banner h3,
+.media-banner h4,
+.media-banner p,
+.media-banner span,
+.media-banner li,
+.media-banner .lead {
+    color: #ffffff;
+}
+
+.media-banner .text-muted {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Variante für mittig platzierten Text (Kategorie-Kacheln) */
+.media-banner--center::before {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+/* ---------------------------------------------------------
+   3. Kategorie-Kacheln
+   --------------------------------------------------------- */
+.category-tile {
+    display: flex;
+    align-items: flex-end;
+    min-height: 260px;
+    padding: 1.75rem;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.category-tile:hover {
+    transform: translateY(-4px);
+}
+
+.category-tile h2,
+.category-tile h3 {
+    margin-bottom: 0.25rem;
+}
+
+/* ---------------------------------------------------------
+   4. Mengen-Eingabe (Warenkorb, Produktseite, Schnellansicht)
+   Das Theme erzwingt width:2rem, dadurch war der eingegebene
+   Wert hinter den Pfeilen nicht mehr lesbar.
+   --------------------------------------------------------- */
+.input-spinner .form-input,
+.input-spinner input[type="number"] {
+    width: 3.5rem !important;
+    min-width: 3.5rem;
+    height: 2.25rem;
+    min-height: 2.25rem;
+    padding: 0 0.25rem;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #212529;
+    background-color: #fff;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Native Pfeile ausblenden – wir haben eigene +/- Schaltflächen */
+.input-spinner input[type="number"]::-webkit-outer-spin-button,
+.input-spinner input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input-spinner .button-minus,
+.input-spinner .button-plus {
+    height: 2.25rem;
+    width: 2.25rem;
+    line-height: 1;
+    font-weight: 600;
+    color: #212529;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.input-spinner .button-minus:hover,
+.input-spinner .button-plus:hover {
+    background-color: #e9ecef;
+}
+
+/* ---------------------------------------------------------
+   5. Hero-Slider
+   --------------------------------------------------------- */
+.hero-banner {
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 767.98px) {
+    .hero-banner {
+        min-height: 340px;
+    }
+
+    .media-banner::before {
+        background: rgba(0, 0, 0, 0.65);
+    }
+}

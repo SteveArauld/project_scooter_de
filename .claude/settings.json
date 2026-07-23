@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"\\\\\\\\\\\\\\\\wsl.localhost\\\\\\\\Ubuntu\\\\\\\\var\\\\\\\\www\\\\\\\\html\\\\\\\\couteur\"; echo \"===JSON SIZE===\"; wc -l database/datas/products_laravel.json; echo \"===JSON HEAD===\"; head -c 3000 database/datas/products_laravel.json)",
+      "Read(///wsl.localhost/Ubuntu/var/www/html/**)",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}
