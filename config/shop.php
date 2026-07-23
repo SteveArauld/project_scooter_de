@@ -23,7 +23,7 @@ return [
     'country'   => env('SHOP_COUNTRY', 'Deutschland'),
 
     'email'     => env('SHOP_EMAIL', 'kontakt@voltscoot.de'),
-    'phone'     => env('SHOP_PHONE', '+49 30 1234567'),
+    'phone'     => env('SHOP_PHONE', '+49 01 5236942793'),
 
     // Postfach, das die Bestelleingänge erhält
     'order_email' => env('ORDER_ADMIN_EMAIL', env('SHOP_EMAIL', 'kontakt@voltscoot.de')),

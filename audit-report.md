@@ -12,7 +12,7 @@
 - **Adresse :** R. de São Simão, 3320-313 Bunheiro, Portugal
 - **Téléphone / WhatsApp :** +351 912 026 453
 - **NIF :** 508140552
-- **Email :** contato@portocontentores.pt (choisi comme email unique)
+- **Email :** kontakt@voltscoot.de (choisi comme email unique)
 
 ---
 
@@ -32,16 +32,16 @@
 | 1.8 | `lang/pt.json` - privacy.section1.address | Ancienne adresse : "Rua das Portas, 123, 4000-001 Porto, Portugal" | ✅ CORRIGÉ : Remplacé par "R. de São Simão, 3320-313 Bunheiro, Portugal" |
 | 1.9 | `lang/pt.json` - legal.nif | Ancien NIF : "514826739" | ✅ CORRIGÉ : Remplacé par "508140552" |
 | 1.10 | `lang/pt.json` - legal.address | Ancienne adresse : "Rua das Contentores, 45 – 4000-100 Porto, Portugal" | ✅ CORRIGÉ : Remplacé par "R. de São Simão, 3320-313 Bunheiro, Portugal" |
-| 1.11 | `lang/pt.json` - legal.email_address | Ancien email : "info@portocontentores.pt" | ✅ CORRIGÉ : Remplacé par "contato@portocontentores.pt" |
+| 1.11 | `lang/pt.json` - legal.email_address | Ancien email : "info@portocontentores.pt" | ✅ CORRIGÉ : Remplacé par "kontakt@voltscoot.de" |
 | 1.12 | `lang/en.json` - footer.company.address | Ancienne adresse : "Via Case Rosse, 19/B 84131 Salerno (SA), Italy" | ✅ CORRIGÉ : Remplacé par "R. de São Simão, 3320-313 Bunheiro, Portugal" |
 | 1.13 | `lang/es.json` - footer.company.address | Ancienne adresse : "Via Case Rosse, 19/B 84131 Salerno (SA), Italia" | ✅ CORRIGÉ : Remplacé par "R. de São Simão, 3320-313 Bunheiro, Portugal" |
 | 1.14 | `lang/fr.json` - footer.company.address | Ancienne adresse : "Via Case Rosse, 19/B 84131 Salerno (SA), Italie" | ✅ CORRIGÉ : Remplacé par "R. de São Simão, 3320-313 Bunheiro, Portugal" |
 | 1.15 | `lang/it.json` - footer.company.address | Ancienne adresse : "Via Case Rosse, 19/B 84131 Salerno (SA), Italia" | ✅ CORRIGÉ : Remplacé par "R. de São Simão, 3320-313 Bunheiro, Portogallo" |
 | 1.16 | `resources/views/front/legal/refund-policy.blade.php` | Email hardcoded : "info@portocontentores.pt" | ✅ CORRIGÉ : Remplacé par translation key |
 | 1.17 | `resources/views/front/legal/refund-policy.blade.php` | WhatsApp hardcoded : "+351 912 345 678" | ✅ CORRIGÉ : Remplacé par translation key |
-| 1.18 | `resources/views/front/legal/delivery-policy.blade.php` | Email hardcoded : "contato@portocontentores.pt" | ✅ CORRIGÉ : Remplacé par translation key |
+| 1.18 | `resources/views/front/legal/delivery-policy.blade.php` | Email hardcoded : "kontakt@voltscoot.de" | ✅ CORRIGÉ : Remplacé par translation key |
 | 1.19 | `resources/views/front/legal/delivery-policy.blade.php` | WhatsApp hardcoded : "+351 912 345 678" | ✅ CORRIGÉ : Remplacé par translation key |
-| 1.20 | `resources/views/layouts/partials/navbar/public.blade.php` | Email hardcoded : "contato@portocontentores.pt" | ✅ CORRIGÉ : Remplacé par translation key |
+| 1.20 | `resources/views/layouts/partials/navbar/public.blade.php` | Email hardcoded : "kontakt@voltscoot.de" | ✅ CORRIGÉ : Remplacé par translation key |
 | 1.21 | `resources/views/layouts/partials/navbar/public.blade.php` | Prot incorrect : "tel:" au lieu de "mailto:" | ✅ CORRIGÉ : Remplacé par "mailto:" |
 
 ### 2. Texte de template non nettoyé
