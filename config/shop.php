@@ -23,7 +23,18 @@ return [
     'country'   => env('SHOP_COUNTRY', 'Deutschland'),
 
     'email'     => env('SHOP_EMAIL', 'kontakt@voltscoot.de'),
-    'phone'     => env('SHOP_PHONE', '+49 01 5236942793'),
+    'phone'     => env('SHOP_PHONE', '+49 52 36942793'),
+
+    /*
+     | WhatsApp-Kontakt für die schwebende Schaltfläche auf allen Seiten.
+     | Die wa.me-URL wird aus der Nummer automatisch ohne Leer- und
+     | Sonderzeichen gebildet.
+     */
+    'whatsapp'         => env('SHOP_WHATSAPP', '+49 52 36942793'),
+    'whatsapp_message' => env(
+        'SHOP_WHATSAPP_MESSAGE',
+        'Hallo, ich interessiere mich für Ihre E-Roller und E-Scooter und hätte dazu eine Frage.'
+    ),
 
     // Postfach, das die Bestelleingänge erhält
     'order_email' => env('ORDER_ADMIN_EMAIL', env('SHOP_EMAIL', 'kontakt@voltscoot.de')),

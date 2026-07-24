@@ -99,6 +99,9 @@
 
     @include('front.layouts.partials.footer.public')
 
+    <!-- Schwebende WhatsApp-Schaltfläche -->
+    @include('front.partials.whatsapp')
+
     <!-- Schnellansicht Modal (Template-Style) -->
     <div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered">

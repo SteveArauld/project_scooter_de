@@ -156,3 +156,76 @@
         background: rgba(0, 0, 0, 0.65);
     }
 }
+
+/* ---------------------------------------------------------
+   Schwebende WhatsApp-Schaltfläche (auf allen Seiten)
+   --------------------------------------------------------- */
+.whatsapp-float {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1040; /* unter Modals (1055), über dem Seiteninhalt */
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    height: 56px;
+    padding: 0 13px;
+    border-radius: 28px;
+    background-color: #25d366;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    transition: gap 0.25s ease, padding 0.25s ease, background-color 0.2s ease;
+}
+
+.whatsapp-float:hover,
+.whatsapp-float:focus {
+    background-color: #1da851;
+    color: #fff;
+    gap: 9px;
+    padding-right: 22px;
+}
+
+.whatsapp-float:focus-visible {
+    outline: 3px solid #0d6efd;
+    outline-offset: 3px;
+}
+
+/* Beschriftung erscheint erst beim Überfahren */
+.whatsapp-float__label {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 0.95rem;
+    opacity: 0;
+    transition: max-width 0.25s ease, opacity 0.2s ease;
+}
+
+.whatsapp-float:hover .whatsapp-float__label,
+.whatsapp-float:focus .whatsapp-float__label {
+    max-width: 120px;
+    opacity: 1;
+}
+
+/* Auf kleinen Bildschirmen nur das Symbol, etwas höher wegen Browserleisten */
+@media (max-width: 575.98px) {
+    .whatsapp-float {
+        right: 16px;
+        bottom: 16px;
+        height: 52px;
+        padding: 0 11px;
+    }
+
+    .whatsapp-float__label,
+    .whatsapp-float:hover .whatsapp-float__label {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .whatsapp-float,
+    .whatsapp-float__label {
+        transition: none;
+    }
+}
