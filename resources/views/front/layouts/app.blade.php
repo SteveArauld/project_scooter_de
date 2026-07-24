@@ -101,7 +101,7 @@
     background-color: #25d366;
     color: #fff;
     text-decoration: none;
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    /* box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); */
     transition: gap 0.25s ease, padding 0.25s ease, background-color 0.2s ease;
 }
 
