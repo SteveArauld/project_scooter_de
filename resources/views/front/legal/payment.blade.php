@@ -1,7 +1,8 @@
 @extends('front.layouts.app')
 
 @section('title', 'Zahlungsarten')
-@section('meta_description', 'Diese Zahlungsarten stehen Ihnen bei ' . config('shop.name') . ' zur Verfügung: Vorkasse per Überweisung, Kauf auf Rechnung und Barzahlung bei Abholung.')
+@section('meta_description', 'Diese Zahlungsarten stehen Ihnen bei ' . config('shop.name') . ' zur Verfügung: '
+    . implode(', ', array_column(config('shop.payment_methods', []), 'label')) . '.')
 
 @section('content')
 <main>
@@ -12,43 +13,39 @@
 
   <section class="py-lg-10 py-8">
     <div class="container">
+      {{-- Übersicht aller Logos --}}
+      <div class="mb-8">
+        @include('front.partials.payment-methods', [
+          'title' => 'Unsere Zahlungsarten auf einen Blick',
+          'align' => 'start',
+          'showLink' => false,
+          'size' => 36,
+        ])
+      </div>
+
+      {{-- Details je Zahlungsart – gepflegt in config/shop.php --}}
       <div class="row g-4 mb-8">
+        @foreach(config('shop.payment_methods', []) as $method)
         <div class="col-md-4">
           <div class="card border h-100">
             <div class="card-body p-5">
-              <i class="feather-icon icon-credit-card fs-3 text-primary"></i>
-              <h2 class="fs-5 mt-3 mb-2">Vorkasse per Überweisung</h2>
-              <p class="text-muted small mb-0">
-                Nach Ihrer Bestellung erhalten Sie von uns eine E-Mail mit allen Bankdaten und Ihrer
-                Bestellnummer. Sobald der Betrag bei uns eingegangen ist, versenden wir Ihre Ware.
-              </p>
+              <img src="{{ asset($method['logo']) }}" alt="{{ $method['label'] }}"
+                   width="79" height="40" style="width:79px;height:auto" class="rounded">
+              <h2 class="fs-5 mt-3 mb-2">{{ $method['label'] }}</h2>
+              <p class="text-muted small mb-0">{{ $method['description'] }}</p>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card border h-100">
-            <div class="card-body p-5">
-              <i class="feather-icon icon-file-text fs-3 text-primary"></i>
-              <h2 class="fs-5 mt-3 mb-2">Kauf auf Rechnung</h2>
-              <p class="text-muted small mb-0">
-                Für Bestandskunden und Gewerbekunden bieten wir den Kauf auf Rechnung an. Der Rechnungsbetrag
-                ist innerhalb von 14 Tagen ab Rechnungsdatum ohne Abzug fällig.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card border h-100">
-            <div class="card-body p-5">
-              <i class="feather-icon icon-shopping-bag fs-3 text-primary"></i>
-              <h2 class="fs-5 mt-3 mb-2">Barzahlung bei Abholung</h2>
-              <p class="text-muted small mb-0">
-                Sie können Ihr Fahrzeug in einer unserer <a href="{{ route('stores') }}">Filialen</a> abholen und
-                vor Ort bar oder mit EC-Karte bezahlen.
-              </p>
-            </div>
-          </div>
-        </div>
+        @endforeach
+      </div>
+
+      <div class="mb-8">
+        @include('front.partials.shipping-carriers', [
+          'title' => 'Unsere Versandpartner',
+          'align' => 'start',
+          'showLink' => true,
+          'size' => 36,
+        ])
       </div>
 
       <div class="row">

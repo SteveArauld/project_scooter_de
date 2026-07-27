@@ -60,6 +60,30 @@
             </div>
         </div>
 
+        <!-- Zahlungsarten & Versandpartner -->
+        <div class="border-top py-5">
+            @include('front.partials.payment-methods', [
+                'title' => 'Unsere Zahlungsarten',
+                'align' => 'center',
+                'showLink' => true,
+            ])
+
+            <div class="mt-5">
+                @include('front.partials.shipping-carriers', [
+                    'title' => 'Unsere Versandpartner',
+                    'align' => 'center',
+                    'showLink' => true,
+                ])
+            </div>
+
+            <ul class="list-unstyled d-flex flex-wrap gap-2 justify-content-center mt-5 mb-0">
+                <li><span class="badge bg-white border text-dark fw-normal px-3 py-2"><i class="feather-icon icon-truck text-primary me-2"></i>Kostenloser Versand</span></li>
+                <li><span class="badge bg-white border text-dark fw-normal px-3 py-2"><i class="feather-icon icon-shield text-primary me-2"></i>{{ config('shop.warranty_months') }} Monate Garantie</span></li>
+                <li><span class="badge bg-white border text-dark fw-normal px-3 py-2"><i class="feather-icon icon-rotate-ccw text-primary me-2"></i>{{ config('shop.return_days') }} Tage Widerrufsrecht</span></li>
+                <li><span class="badge bg-white border text-dark fw-normal px-3 py-2"><i class="feather-icon icon-lock text-primary me-2"></i>SSL-verschlüsselt</span></li>
+            </ul>
+        </div>
+
         <div class="border-top py-4">
             <div class="row align-items-center">
                 <div class="col-md-6">

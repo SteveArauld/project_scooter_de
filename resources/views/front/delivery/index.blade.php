@@ -13,6 +13,15 @@
   <section class="py-lg-10 py-8">
     <div class="container">
 
+      <div class="mb-lg-10 mb-8">
+        @include('front.partials.shipping-carriers', [
+          'title' => 'Unsere Versandpartner',
+          'align' => 'start',
+          'showLink' => false,
+          'size' => 36,
+        ])
+      </div>
+
       <div class="row g-4 mb-lg-10 mb-8">
         <div class="col-md-4">
           <div class="card border h-100">

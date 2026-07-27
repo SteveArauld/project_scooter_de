@@ -53,6 +53,102 @@ return [
     // Steuer
     'vat_rate'  => 19,                // Prozent, im Preis enthalten
 
+    /*
+    |--------------------------------------------------------------------------
+    | Zahlungsarten
+    |--------------------------------------------------------------------------
+    | Einzige Quelle der Wahrheit für alle Stellen, an denen Zahlungsarten
+    | angezeigt werden: Footer, Kasse, Bestellbestätigung, Bestell-E-Mails
+    | und die Seite /zahlungsarten.
+    |
+    | Google Merchant Center verlangt, dass die akzeptierten Zahlungsarten vor
+    | Abschluss der Bestellung klar sichtbar sind. Hier dürfen deshalb nur
+    | Zahlungsarten stehen, die wir tatsächlich anbieten.
+    |
+    | 'checkout' => true  → wird an der Kasse als auswählbare Zahlungsart angeboten
+    | 'checkout' => false → wird nur als Logo/Hinweis angezeigt (z. B. Kartenzahlung
+    |                       über den PayPal-Checkout)
+    */
+    'payment_methods' => [
+        [
+            'key'         => 'vorkasse',
+            'label'       => 'Vorkasse per Überweisung',
+            'short'       => 'Vorkasse',
+            'icon'        => 'icon-credit-card',
+            'logo'        => 'assets/images/payment/vorkasse.svg',
+            'checkout'    => true,
+            'description' => 'Nach Ihrer Bestellung erhalten Sie eine E-Mail mit allen Bankdaten und Ihrer '
+                . 'Bestellnummer. Sobald der Betrag bei uns eingegangen ist, versenden wir Ihre Ware.',
+        ],
+        [
+            'key'         => 'paypal',
+            'label'       => 'PayPal',
+            'short'       => 'PayPal',
+            'icon'        => 'icon-shield',
+            'logo'        => 'assets/images/payment/paypal.svg',
+            'checkout'    => true,
+            'description' => 'Bezahlen Sie schnell und käuferschutzgesichert über Ihr PayPal-Konto. '
+                . 'Nach der Bestellung erhalten Sie einen Zahlungslink per E-Mail.',
+        ],
+        [
+            'key'         => 'sofort',
+            'label'       => 'Sofortüberweisung',
+            'short'       => 'Sofort.',
+            'icon'        => 'icon-zap',
+            'logo'        => 'assets/images/payment/sofort.svg',
+            'checkout'    => true,
+            'description' => 'Direktüberweisung über Ihr Online-Banking. Die Zahlung wird uns sofort '
+                . 'bestätigt, wir versenden Ihre Ware umgehend.',
+        ],
+        [
+            'key'         => 'paypalplus',
+            'label'       => 'PayPal Plus (Rechnung / Ratenzahlung)',
+            'short'       => 'PayPal Plus',
+            'icon'        => 'icon-file-text',
+            'logo'        => 'assets/images/payment/paypalplus.svg',
+            'checkout'    => true,
+            'description' => 'Kauf auf Rechnung oder Ratenzahlung über PayPal Plus – ein PayPal-Konto ist '
+                . 'dafür nicht erforderlich.',
+        ],
+        [
+            'key'         => 'visa',
+            'label'       => 'VISA',
+            'short'       => 'VISA',
+            'icon'        => 'icon-credit-card',
+            'logo'        => 'assets/images/payment/visa.svg',
+            'checkout'    => true,
+            'description' => 'Kartenzahlung mit VISA – abgewickelt über den gesicherten PayPal-Checkout, '
+                . 'ein PayPal-Konto ist dafür nicht erforderlich.',
+        ],
+        [
+            'key'         => 'mastercard',
+            'label'       => 'MasterCard',
+            'short'       => 'MasterCard',
+            'icon'        => 'icon-credit-card',
+            'logo'        => 'assets/images/payment/mastercard.svg',
+            'checkout'    => true,
+            'description' => 'Kartenzahlung mit MasterCard – abgewickelt über den gesicherten '
+                . 'PayPal-Checkout, ein PayPal-Konto ist dafür nicht erforderlich.',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Versandpartner
+    |--------------------------------------------------------------------------
+    | Werden im Footer und auf der Versandseite als Logos ausgewiesen.
+    | Große Fahrzeuge gehen per Spedition, Zubehör per Paketdienst.
+    */
+    'shipping_carriers' => [
+        ['key' => 'post',         'label' => 'Deutsche Post', 'logo' => 'assets/images/shipping/post.svg'],
+        ['key' => 'dhl',          'label' => 'DHL',           'logo' => 'assets/images/shipping/dhl.svg'],
+        ['key' => 'dpd',          'label' => 'DPD',           'logo' => 'assets/images/shipping/dpd.svg'],
+        ['key' => 'db_schenker',  'label' => 'DB Schenker',   'logo' => 'assets/images/shipping/db_schenker.svg'],
+        ['key' => 'emons',        'label' => 'Emons',         'logo' => 'assets/images/shipping/emons.svg'],
+        ['key' => 'gel',          'label' => 'GEL',           'logo' => 'assets/images/shipping/gel.svg'],
+        ['key' => 'gls',          'label' => 'GLS',           'logo' => 'assets/images/shipping/gls.svg'],
+    ],
+
     'default_description' => 'Elektroroller und E-Scooter mit Straßenzulassung online kaufen. '
         . 'Große Auswahl, kostenloser Versand in ganz Deutschland, 24 Monate Garantie und persönliche Beratung.',
 

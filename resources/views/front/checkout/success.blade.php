@@ -28,7 +28,27 @@
                 <span>Gesamt</span>
                 <span>{{ number_format($order['total'], 2, ',', '.') }} €</span>
               </div>
+
+              <hr class="my-4">
+              @include('front.partials.payment-methods', [
+                'title' => 'Unsere Zahlungsarten',
+                'align' => 'start',
+                'showLink' => true,
+                'size' => 32,
+              ])
+              <p class="text-muted small mt-3 mb-0">
+                Alle Zahlungsinformationen erhalten Sie mit Ihrer Bestellbestätigung per E-Mail.
+              </p>
             </div>
+          </div>
+
+          <div class="mt-6 text-start">
+            @include('front.partials.shipping-carriers', [
+              'title' => 'Versand mit',
+              'align' => 'start',
+              'showLink' => true,
+              'size' => 32,
+            ])
           </div>
 
           <a href="{{ route('products.index') }}" class="btn btn-primary mt-6">Weiter einkaufen</a>

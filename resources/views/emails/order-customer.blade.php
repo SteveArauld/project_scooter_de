@@ -92,6 +92,20 @@
         Alle Preise inkl. {{ config('shop.vat_rate') }} % MwSt. Der Versand innerhalb Deutschlands ist kostenlos.
     </p>
 
+    {{-- Verfügbare Zahlungsarten --}}
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+           style="margin:0 0 24px 0; border:1px solid #e5e7eb; border-radius:6px;">
+        <tr>
+            <td style="padding:16px; font-family:Arial,Helvetica,sans-serif; font-size:14px; color:#212529;">
+                <strong style="display:block; margin-bottom:6px;">Unsere Zahlungsarten</strong>
+                {{ implode(' · ', array_column(config('shop.payment_methods', []), 'short')) }}<br>
+                <span style="color:#6c757d; font-size:13px;">
+                    Wir melden uns in Kürze mit allen Zahlungsinformationen zu Ihrer Bestellung.
+                </span>
+            </td>
+        </tr>
+    </table>
+
     {{-- Adressen --}}
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 24px 0;">
         <tr>

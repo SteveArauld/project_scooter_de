@@ -20,11 +20,19 @@
     <div class="container">
       <h1 class="fs-2 mb-6">Kasse</h1>
 
+      @php
+        // Der Block „Abweichende Lieferadresse“ muss offen bleiben, wenn dort Fehler auftraten
+        $shippingKeys  = ['shipping_first_name','shipping_last_name','shipping_address','shipping_zip','shipping_city','shipping_country'];
+        $shippingOpen  = old('different_shipping') || $errors->hasAny($shippingKeys);
+      @endphp
+
       @if($errors->any())
       <div class="alert alert-danger">
-        <ul class="mb-0">
-          @foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach
-        </ul>
+        <p class="fw-semibold mb-1">Bitte prüfen Sie Ihre Eingaben.</p>
+        <p class="mb-0 small">Die betroffenen Felder sind unten rot markiert.</p>
+        @foreach(['items', 'mail'] as $globalKey)
+          @error($globalKey)<p class="mb-0 mt-2">{{ $message }}</p>@enderror
+        @endforeach
       </div>
       @endif
 
@@ -39,40 +47,58 @@
                 <h5 class="mb-4">Lieferadresse</h5>
                 <div class="row g-3">
                   <div class="col-md-6">
-                    <label class="form-label">Vorname *</label>
-                    <input type="text" name="first_name" value="{{ old('first_name') }}" class="form-control" required>
+                    <label class="form-label" for="first_name">Vorname *</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ old('first_name') }}"
+                           class="form-control @error('first_name') is-invalid @enderror" required>
+                    @error('first_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label">Nachname *</label>
-                    <input type="text" name="last_name" value="{{ old('last_name') }}" class="form-control" required>
+                    <label class="form-label" for="last_name">Nachname *</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ old('last_name') }}"
+                           class="form-control @error('last_name') is-invalid @enderror" required>
+                    @error('last_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label">E-Mail *</label>
-                    <input type="email" name="email" value="{{ old('email') }}" class="form-control" required>
+                    <label class="form-label" for="email">E-Mail *</label>
+                    <input type="email" id="email" name="email" value="{{ old('email') }}"
+                           class="form-control @error('email') is-invalid @enderror" required>
+                    @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label">Telefon *</label>
-                    <input type="text" name="phone" value="{{ old('phone') }}" class="form-control" required>
+                    <label class="form-label" for="phone">Telefon *</label>
+                    <input type="text" id="phone" name="phone" value="{{ old('phone') }}"
+                           class="form-control @error('phone') is-invalid @enderror" required>
+                    @error('phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
                   </div>
                   <div class="col-12">
-                    <label class="form-label">Straße und Hausnummer *</label>
-                    <input type="text" name="address" value="{{ old('address') }}" class="form-control" required>
+                    <label class="form-label" for="address">Straße und Hausnummer *</label>
+                    <input type="text" id="address" name="address" value="{{ old('address') }}"
+                           class="form-control @error('address') is-invalid @enderror" required>
+                    @error('address')<div class="invalid-feedback">{{ $message }}</div>@enderror
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">PLZ *</label>
-                    <input type="text" name="zip" value="{{ old('zip') }}" class="form-control" required>
+                    <label class="form-label" for="zip">PLZ *</label>
+                    <input type="text" id="zip" name="zip" value="{{ old('zip') }}"
+                           class="form-control @error('zip') is-invalid @enderror" required>
+                    @error('zip')<div class="invalid-feedback">{{ $message }}</div>@enderror
                   </div>
                   <div class="col-md-8">
-                    <label class="form-label">Stadt *</label>
-                    <input type="text" name="city" value="{{ old('city') }}" class="form-control" required>
+                    <label class="form-label" for="city">Stadt *</label>
+                    <input type="text" id="city" name="city" value="{{ old('city') }}"
+                           class="form-control @error('city') is-invalid @enderror" required>
+                    @error('city')<div class="invalid-feedback">{{ $message }}</div>@enderror
                   </div>
                   <div class="col-12">
-                    <label class="form-label">Land *</label>
-                    <input type="text" name="country" value="{{ old('country', 'Deutschland') }}" class="form-control" required>
+                    <label class="form-label" for="country">Land *</label>
+                    <input type="text" id="country" name="country" value="{{ old('country', 'Deutschland') }}"
+                           class="form-control @error('country') is-invalid @enderror" required>
+                    @error('country')<div class="invalid-feedback">{{ $message }}</div>@enderror
                   </div>
                   <div class="col-12">
-                    <label class="form-label">Anmerkung (optional)</label>
-                    <textarea name="notes" rows="3" class="form-control">{{ old('notes') }}</textarea>
+                    <label class="form-label" for="notes">Anmerkung (optional)</label>
+                    <textarea id="notes" name="notes" rows="3"
+                              class="form-control @error('notes') is-invalid @enderror">{{ old('notes') }}</textarea>
+                    @error('notes')<div class="invalid-feedback">{{ $message }}</div>@enderror
                   </div>
                 </div>
 
@@ -81,7 +107,7 @@
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" value="1"
                          name="different_shipping" id="differentShipping"
-                         {{ old('different_shipping') ? 'checked' : '' }}>
+                         {{ $shippingOpen ? 'checked' : '' }}>
                   <label class="form-check-label fw-semibold" for="differentShipping">
                     An eine andere Adresse liefern
                   </label>
@@ -91,43 +117,56 @@
                   </div>
                 </div>
 
-                <div id="shippingFields" class="mt-4 {{ old('different_shipping') ? '' : 'd-none' }}">
+                <div id="shippingFields" class="mt-4 {{ $shippingOpen ? '' : 'd-none' }}">
                   <h2 class="fs-6 mb-3">Abweichende Lieferadresse</h2>
                   <div class="row g-3">
                     <div class="col-md-6">
                       <label class="form-label" for="shipping_first_name">Vorname *</label>
                       <input type="text" id="shipping_first_name" name="shipping_first_name"
-                             value="{{ old('shipping_first_name') }}" class="form-control">
+                             value="{{ old('shipping_first_name') }}"
+                             class="form-control @error('shipping_first_name') is-invalid @enderror">
+                      @error('shipping_first_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-md-6">
                       <label class="form-label" for="shipping_last_name">Nachname *</label>
                       <input type="text" id="shipping_last_name" name="shipping_last_name"
-                             value="{{ old('shipping_last_name') }}" class="form-control">
+                             value="{{ old('shipping_last_name') }}"
+                             class="form-control @error('shipping_last_name') is-invalid @enderror">
+                      @error('shipping_last_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-12">
                       <label class="form-label" for="shipping_address">Straße und Hausnummer *</label>
                       <input type="text" id="shipping_address" name="shipping_address"
-                             value="{{ old('shipping_address') }}" class="form-control">
+                             value="{{ old('shipping_address') }}"
+                             class="form-control @error('shipping_address') is-invalid @enderror">
+                      @error('shipping_address')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-md-4">
                       <label class="form-label" for="shipping_zip">PLZ *</label>
                       <input type="text" id="shipping_zip" name="shipping_zip"
-                             value="{{ old('shipping_zip') }}" class="form-control">
+                             value="{{ old('shipping_zip') }}"
+                             class="form-control @error('shipping_zip') is-invalid @enderror">
+                      @error('shipping_zip')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-md-8">
                       <label class="form-label" for="shipping_city">Ort *</label>
                       <input type="text" id="shipping_city" name="shipping_city"
-                             value="{{ old('shipping_city') }}" class="form-control">
+                             value="{{ old('shipping_city') }}"
+                             class="form-control @error('shipping_city') is-invalid @enderror">
+                      @error('shipping_city')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-12">
                       <label class="form-label" for="shipping_country">Land *</label>
                       <input type="text" id="shipping_country" name="shipping_country"
-                             value="{{ old('shipping_country', 'Deutschland') }}" class="form-control">
+                             value="{{ old('shipping_country', 'Deutschland') }}"
+                             class="form-control @error('shipping_country') is-invalid @enderror">
+                      @error('shipping_country')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
           </div>
 
           <!-- Bestellübersicht -->
@@ -154,6 +193,41 @@
                     <a href="{{ route('privacy') }}">Datenschutzerklärung</a> zur Kenntnis genommen zu haben.
                     Alle Preise verstehen sich inkl. {{ config('shop.vat_rate') }} % MwSt., der Versand
                     innerhalb Deutschlands ist kostenlos. Sie erhalten eine Bestätigung per E-Mail.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Zahlungsarten (nur Information, keine Auswahl an der Kasse) -->
+          <div class="col-12 mt-6">
+            <div class="card border shadow-sm">
+              <div class="card-body p-6">
+                <h5 class="mb-1">Zahlungsarten</h5>
+                <p class="text-muted small mb-4">
+                  Diese Zahlungsarten stehen Ihnen zur Verfügung. Nach dem Absenden Ihrer Bestellung
+                  erhalten Sie von uns alle Zahlungsinformationen per E-Mail. Es fallen keine
+                  zusätzlichen Zahlungsgebühren an.
+                </p>
+
+                @include('front.partials.payment-methods', [
+                  'title' => null,
+                  'align' => 'start',
+                  'showLink' => false,
+                  'size' => 36,
+                ])
+
+                <ul class="list-unstyled row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-2 mb-3">
+                  @foreach(config('shop.payment_methods', []) as $method)
+                    <li class="col">
+                      <span class="fw-semibold small d-block mb-1">{{ $method['label'] }}</span>
+                      <span class="text-muted small">{{ $method['description'] }}</span>
+                    </li>
+                  @endforeach
+                </ul>
+
+                <p class="small text-muted mb-0">
+                  Die Übertragung Ihrer Daten erfolgt verschlüsselt über SSL/TLS. Weitere Informationen
+                  finden Sie unter <a href="{{ route('payment') }}">Zahlungsarten</a>.
                 </p>
               </div>
             </div>
