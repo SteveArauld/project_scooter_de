@@ -132,6 +132,13 @@
 
 @push('scripts')
 <script>
+  // ISO-Datum (YYYY-MM-DD) in deutsche Schreibweise umwandeln
+  function formatReleaseDate(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return iso;
+    return d.toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
   function renderCartPage() {
     var items = Cart.items();
     var rows = document.getElementById('cartRows');
@@ -151,7 +158,10 @@
       return '<tr>' +
         '<td><div class="d-flex align-items-center">' +
         '<img src="' + i.image + '" style="width:70px;height:70px;object-fit:contain" class="me-3" />' +
-        '<a href="' + i.url + '" class="text-inherit text-decoration-none">' + i.title + '</a></div></td>' +
+        '<div><a href="' + i.url + '" class="text-inherit text-decoration-none">' + i.title + '</a>' +
+        (i.preorder ? '<div class="mt-1"><span class="badge bg-warning text-dark">Vorbestellung</span>' +
+          '<small class="text-muted ms-2">Lieferbar ab ' + formatReleaseDate(i.preorder) + '</small></div>' : '') +
+        '</div></div></td>' +
         '<td class="text-center" style="min-width:140px">' +
         '<div class="input-group input-spinner flex-nowrap justify-content-center" style="max-width:140px;margin:auto">' +
         '<button type="button" class="button-minus btn btn-sm border" aria-label="Menge verringern"' +

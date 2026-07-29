@@ -44,6 +44,8 @@
       });
       if (found) {
         found.qty += qty;
+        // Erscheinungsdatum nachziehen, falls es beim ersten Hinzufügen fehlte
+        found.preorder = product.preorder || found.preorder || null;
       } else {
         items.push({
           slug: product.slug,
@@ -51,6 +53,7 @@
           price: parseFloat(product.price) || 0,
           image: product.image || "",
           url: product.url || "#",
+          preorder: product.preorder || null,
           qty: qty,
         });
       }
@@ -136,6 +139,46 @@
     });
   }
 
+  /**
+   * Vorbestellung in der Schnellansicht abbilden: Hinweisbox einblenden und
+   * den Kauf-Button in einen Vorbestell-Button umschalten.
+   * product === null setzt den Ausgangszustand (lieferbar) wieder her.
+   */
+  function setPreorderState(modalEl, product) {
+    var box = modalEl.querySelector("#qvPreorder");
+    var addBtn = modalEl.querySelector("#qvAddToCart");
+    var avail = modalEl.querySelector("#qvAvailability");
+    if (!addBtn) return;
+
+    var isPreorder = !!(product && product.is_preorder);
+
+    if (box) {
+      box.classList.toggle("d-none", !isPreorder);
+      box.innerHTML = isPreorder
+        ? '<span class="fw-semibold d-block">Vorbestellung – noch nicht lieferbar</span>' +
+          "Erscheint am " + (product.release_label || product.release_date || "") + "."
+        : "";
+    }
+    if (avail && isPreorder) avail.textContent = "";
+
+    addBtn.classList.toggle("btn-warning", isPreorder);
+    addBtn.classList.toggle("btn-primary", !isPreorder);
+    addBtn.innerHTML = isPreorder
+      ? '<i class="feather-icon icon-clock me-2"></i>Jetzt vorbestellen'
+      : '<i class="feather-icon icon-shopping-bag me-2"></i>In den Warenkorb';
+    addBtn.setAttribute(
+      "data-added-label",
+      isPreorder
+        ? "<i class='bi bi-check-lg me-2'></i>Vorbestellt"
+        : "<i class='bi bi-check-lg me-2'></i>Hinzugefügt"
+    );
+    if (isPreorder) {
+      addBtn.setAttribute("data-preorder", product.release_date || "");
+    } else {
+      addBtn.removeAttribute("data-preorder");
+    }
+  }
+
   function openQuickView(el) {
     var modalEl = document.getElementById("quickViewModal");
     if (!modalEl || !window.bootstrap) return;
@@ -154,6 +197,9 @@
     if (qty) qty.value = 1;
     fillThumbs(modalEl, [d.image || ""]);
 
+    // Vorbestell-Zustand zurücksetzen, bis die vollständigen Daten geladen sind
+    setPreorderState(modalEl, null);
+
     var addBtn = modalEl.querySelector("#qvAddToCart");
     addBtn.setAttribute("data-slug", d.slug || "");
     addBtn.setAttribute("data-title", d.title || "");
@@ -171,6 +217,7 @@
           if (!p) { modalEl.querySelector("#qvDesc").textContent = ""; return; }
           modalEl.querySelector("#qvDesc").textContent = p.description || "";
           modalEl.querySelector("#qvAvailability").textContent = p.availability || "";
+          setPreorderState(modalEl, p);
           if (p.images && p.images.length) fillThumbs(modalEl, p.images);
         })
         .catch(function () { modalEl.querySelector("#qvDesc").textContent = ""; });
@@ -251,6 +298,7 @@
           price: addBtn.getAttribute("data-price"),
           image: addBtn.getAttribute("data-image"),
           url: addBtn.getAttribute("data-url"),
+          preorder: addBtn.getAttribute("data-preorder"),
         },
         qty
       );

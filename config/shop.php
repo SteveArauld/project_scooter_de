@@ -23,14 +23,24 @@ return [
     'country'   => env('SHOP_COUNTRY', 'Deutschland'),
 
     'email'     => env('SHOP_EMAIL', 'kontakt@voltscoot.de'),
-    'phone'     => env('SHOP_PHONE', '+49 15 236942793'),
+
+    /*
+     | Rufnummer im internationalen Format. Nach der Ländervorwahl +49 folgt
+     | die Ortsnetz-/Mobilfunkkennzahl OHNE die nationale Verkehrsausscheidungs-
+     | ziffer 0 (also 152, nicht 0152). Google Merchant Center und die
+     | strukturierten Daten prüfen dieses Format.
+     */
+    'phone'     => env('SHOP_PHONE', '+49 152 36942793'),
+
+    // Dieselbe Nummer in E.164 – für tel:-Links und strukturierte Daten.
+    'phone_e164' => '+' . preg_replace('/\D+/', '', (string) env('SHOP_PHONE', '+49 152 36942793')),
 
     /*
      | WhatsApp-Kontakt für die schwebende Schaltfläche auf allen Seiten.
      | Die wa.me-URL wird aus der Nummer automatisch ohne Leer- und
      | Sonderzeichen gebildet.
      */
-    'whatsapp'         => env('SHOP_WHATSAPP', '+49 15 236942793'),
+    'whatsapp'         => env('SHOP_WHATSAPP', '+49 152 36942793'),
     'whatsapp_message' => env(
         'SHOP_WHATSAPP_MESSAGE',
         'Hallo, ich interessiere mich für Ihre E-Roller und E-Scooter und hätte dazu eine Frage.'

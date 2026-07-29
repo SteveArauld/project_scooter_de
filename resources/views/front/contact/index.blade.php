@@ -106,7 +106,7 @@
               <h2 class="fs-5 mb-4">Direkter Kontakt</h2>
               <p class="mb-3">
                 <i class="feather-icon icon-phone me-2 text-primary"></i>
-                <a href="tel:{{ preg_replace('/\s+/', '', config('shop.phone')) }}" class="text-reset text-decoration-none">{{ config('shop.phone') }}</a>
+                <a href="tel:{{ config('shop.phone_e164') }}" class="text-reset text-decoration-none">{{ config('shop.phone') }}</a>
               </p>
               <p class="mb-3">
                 <i class="feather-icon icon-mail me-2 text-primary"></i>

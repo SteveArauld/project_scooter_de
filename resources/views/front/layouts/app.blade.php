@@ -51,7 +51,7 @@
             'url'       => url('/'),
             'logo'      => url('/assets/images/logo/freshcart-logo.png'),
             'email'     => config('shop.email'),
-            'telephone' => config('shop.phone'),
+            'telephone' => config('shop.phone_e164'),
             'address'   => [
                 '@type'           => 'PostalAddress',
                 'streetAddress'   => config('shop.street'),
@@ -196,6 +196,7 @@
                   <p class="text-muted small mb-2">inkl. MwSt., kostenloser Versand in Deutschland</p>
                   <p id="qvBrand" class="text-muted small mb-1"></p>
                   <p id="qvAvailability" class="text-success small mb-3"></p>
+                  <div id="qvPreorder" class="alert alert-warning py-2 px-3 small mb-3 d-none" role="status"></div>
                   <p id="qvDesc" class="text-muted small mb-3"></p>
                   <hr class="my-4">
                   <div class="d-flex align-items-center gap-3 mb-4">

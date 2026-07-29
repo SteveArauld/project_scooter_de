@@ -103,6 +103,57 @@ class Product extends Model
         return self::CATEGORY_ICONS[$this->category] ?? 'icon-truck';
     }
 
+    /**
+     * Deutsche Monatsnamen, wie sie im Verfügbarkeitstext der Quelldaten
+     * vorkommen ("Dieses Produkt erscheint am 1. August 2026 …").
+     */
+    private const GERMAN_MONTHS = [
+        'januar' => 1, 'februar' => 2, 'märz' => 3, 'maerz' => 3, 'april' => 4,
+        'mai' => 5, 'juni' => 6, 'juli' => 7, 'august' => 8, 'september' => 9,
+        'oktober' => 10, 'november' => 11, 'dezember' => 12,
+    ];
+
+    /**
+     * Erscheinungsdatum aus dem Verfügbarkeitstext. Null, wenn der Artikel
+     * kein angekündigtes Datum trägt.
+     */
+    public function getReleaseDateAttribute(): ?\Illuminate\Support\Carbon
+    {
+        $text = (string) $this->availability;
+
+        if (!preg_match('/erscheint\s+am\s+(\d{1,2})\.\s*([\p{L}]+)\s+(\d{4})/iu', $text, $m)) {
+            return null;
+        }
+
+        $month = self::GERMAN_MONTHS[mb_strtolower($m[2])] ?? null;
+        if ($month === null) {
+            return null;
+        }
+
+        try {
+            return \Illuminate\Support\Carbon::createFromDate((int) $m[3], $month, (int) $m[1])->startOfDay();
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Vorbestellung: ein Erscheinungsdatum ist angekündigt und liegt noch
+     * in der Zukunft. Bereits erschienene Artikel gelten wieder als lieferbar.
+     */
+    public function getIsPreorderAttribute(): bool
+    {
+        $release = $this->release_date;
+
+        return $release !== null && $release->isFuture();
+    }
+
+    /** Erscheinungsdatum als ISO-8601-Datum (für Feed & strukturierte Daten). */
+    public function getReleaseDateIsoAttribute(): ?string
+    {
+        return $this->release_date?->toDateString();
+    }
+
     /** Verfügbarkeit im schema.org-Format (für Google Merchant Center). */
     public function getSchemaAvailabilityAttribute(): string
     {
@@ -114,7 +165,11 @@ class Product extends Model
         if (str_contains($text, 'ausverkauft') || str_contains($text, 'nicht verfügbar')) {
             return 'https://schema.org/OutOfStock';
         }
-        if (str_contains($text, 'vorbestell') || str_contains($text, 'vorbestellbar')) {
+        // Angekündigtes, noch nicht erreichtes Erscheinungsdatum
+        if ($this->is_preorder) {
+            return 'https://schema.org/PreOrder';
+        }
+        if (str_contains($text, 'vorbestell')) {
             return 'https://schema.org/PreOrder';
         }
 

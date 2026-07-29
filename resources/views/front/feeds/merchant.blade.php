@@ -27,6 +27,10 @@
 @endforeach
       <g:condition>new</g:condition>
       <g:availability>{{ $product->feed_availability }}</g:availability>
+@if($product->feed_availability === 'preorder' && $product->release_date)
+      {{-- Pflichtfeld bei availability=preorder: ISO 8601 mit Zeitzone --}}
+      <g:availability_date>{{ $product->release_date->toIso8601String() }}</g:availability_date>
+@endif
       <g:price>{{ $price }}</g:price>
 @if($product->brand)
       <g:brand>{{ $product->brand }}</g:brand>

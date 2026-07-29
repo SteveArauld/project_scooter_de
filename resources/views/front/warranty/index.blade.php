@@ -77,8 +77,8 @@
               <p class="text-muted small mb-4">
                 Unser Serviceteam ist Montag bis Freitag von 9 bis 18 Uhr für Sie da.
               </p>
-              <p class="mb-2 small"><i class="feather-icon icon-phone me-2"></i>{{ config('shop.phone') }}</p>
-              <p class="mb-4 small"><i class="feather-icon icon-mail me-2"></i>{{ config('shop.email') }}</p>
+              <p class="mb-2 small"><i class="feather-icon icon-phone me-2"></i><a href="tel:{{ config('shop.phone_e164') }}" class="text-reset text-decoration-none">{{ config('shop.phone') }}</a></p>
+              <p class="mb-4 small"><i class="feather-icon icon-mail me-2"></i><a href="mailto:{{ config('shop.email') }}" class="text-reset text-decoration-none">{{ config('shop.email') }}</a></p>
               <a href="{{ route('contact') }}" class="btn btn-primary w-100">Kontakt aufnehmen</a>
             </div>
           </div>

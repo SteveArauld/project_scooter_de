@@ -11,7 +11,7 @@
                 </p>
                 <ul class="list-unstyled text-muted small mb-3">
                     <li class="mb-1"><i class="feather-icon icon-map-pin me-2"></i>{{ config('shop.street') }}, {{ config('shop.zip') }} {{ config('shop.city') }}</li>
-                    <li class="mb-1"><i class="feather-icon icon-phone me-2"></i><a href="tel:{{ preg_replace('/\s+/', '', config('shop.phone')) }}" class="text-muted text-decoration-none">{{ config('shop.phone') }}</a></li>
+                    <li class="mb-1"><i class="feather-icon icon-phone me-2"></i><a href="tel:{{ config('shop.phone_e164') }}" class="text-muted text-decoration-none">{{ config('shop.phone') }}</a></li>
                     <li class="mb-1"><i class="feather-icon icon-mail me-2"></i><a href="mailto:{{ config('shop.email') }}" class="text-muted text-decoration-none">{{ config('shop.email') }}</a></li>
                 </ul>
                 <div class="d-flex gap-3 fs-5">

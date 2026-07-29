@@ -26,7 +26,7 @@
         'mpn'         => $product->mpn,
         'brand'       => $product->brand ? ['@type' => 'Brand', 'name' => $product->brand] : null,
         'category'    => $product->category_label,
-        'offers'      => [
+        'offers'      => array_filter([
             '@type'           => 'Offer',
             'url'             => route('products.show', $product->slug),
             'priceCurrency'   => $product->currency ?: 'EUR',
@@ -34,6 +34,7 @@
             'priceValidUntil' => now()->addYear()->format('Y-m-d'),
             'itemCondition'   => 'https://schema.org/NewCondition',
             'availability'    => $product->schema_availability,
+            'availabilityStarts' => $product->is_preorder ? $product->release_date->toIso8601String() : null,
             'seller'          => ['@type' => 'Organization', 'name' => config('shop.name')],
             'shippingDetails' => [
                 '@type'        => 'OfferShippingDetails',
@@ -60,7 +61,7 @@
                 'returnMethod'         => 'https://schema.org/ReturnByMail',
                 'returnFees'           => 'https://schema.org/FreeReturn',
             ],
-        ],
+        ]),
     ]);
 
     $breadcrumbLd = [
@@ -118,6 +119,11 @@
         <div class="col-md-6">
           <div class="ps-lg-8 mt-6 mt-md-0">
             <span class="mb-2 d-block text-muted">{{ $product->category_label }}</span>
+            @if($product->is_preorder)
+            <span class="badge bg-warning text-dark mb-2">
+              <i class="feather-icon icon-clock me-1"></i>Vorbestellung
+            </span>
+            @endif
             <h1 class="mb-2 fs-2">{{ $title }}</h1>
             @if($product->brand)<p class="text-muted mb-3">Marke: <strong>{{ $product->brand }}</strong></p>@endif
 
@@ -126,7 +132,17 @@
               <span class="fs-6 text-muted ms-2">inkl. MwSt.</span>
             </div>
 
-            @if($product->availability)
+            @if($product->is_preorder)
+            <div class="alert alert-warning mb-4" role="status">
+              <span class="fw-semibold d-block mb-1">
+                <i class="feather-icon icon-clock me-1"></i>Vorbestellung – noch nicht lieferbar
+              </span>
+              Dieser Artikel erscheint am
+              <time datetime="{{ $product->release_date_iso }}">{{ $product->release_date->translatedFormat('j. F Y') }}</time>.
+              Sie können ihn ab sofort vorbestellen; die Auslieferung erfolgt nach dem Erscheinungsdatum.
+              Belastet wird Ihre Zahlung erst zum Versand.
+            </div>
+            @elseif($product->availability)
             <p class="text-success mb-4"><i class="bi bi-check-circle-fill me-1"></i>{{ $product->availability }}</p>
             @endif
 
@@ -138,15 +154,20 @@
                 <input type="number" min="1" value="1" data-qty-input class="quantity-field form-control-sm form-input text-center border" />
                 <input type="button" value="+" class="button-plus btn btn-sm border" onclick="var q=document.querySelector('[data-qty-input]');q.value=(parseInt(q.value)||1)+1" />
               </div>
-              <button type="button" class="btn btn-primary flex-grow-1"
+              <button type="button" class="btn {{ $product->is_preorder ? 'btn-warning' : 'btn-primary' }} flex-grow-1"
                       data-add-to-cart data-qty-from-input data-open-cart
                       data-slug="{{ $product->slug }}"
                       data-title="{{ $title }}"
                       data-price="{{ $product->price }}"
                       data-image="{{ $product->main_image }}"
                       data-url="{{ route('products.show', $product->slug) }}"
-                      data-added-label="<i class='bi bi-check-lg me-2'></i>Hinzugefügt">
+                      @if($product->is_preorder) data-preorder="{{ $product->release_date_iso }}" @endif
+                      data-added-label="<i class='bi bi-check-lg me-2'></i>{{ $product->is_preorder ? 'Vorbestellt' : 'Hinzugefügt' }}">
+                @if($product->is_preorder)
+                <i class="feather-icon icon-clock me-2"></i>Jetzt vorbestellen
+                @else
                 <i class="feather-icon icon-shopping-bag me-2"></i>In den Warenkorb
+                @endif
               </button>
             </div>
 

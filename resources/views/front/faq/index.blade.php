@@ -77,8 +77,8 @@
           <div class="card border">
             <div class="card-body p-5">
               <h2 class="fs-5 mb-3">Direkter Kontakt</h2>
-              <p class="mb-2 small"><i class="feather-icon icon-phone me-2"></i>{{ config('shop.phone') }}</p>
-              <p class="mb-4 small"><i class="feather-icon icon-mail me-2"></i>{{ config('shop.email') }}</p>
+              <p class="mb-2 small"><i class="feather-icon icon-phone me-2"></i><a href="tel:{{ config('shop.phone_e164') }}" class="text-reset text-decoration-none">{{ config('shop.phone') }}</a></p>
+              <p class="mb-4 small"><i class="feather-icon icon-mail me-2"></i><a href="mailto:{{ config('shop.email') }}" class="text-reset text-decoration-none">{{ config('shop.email') }}</a></p>
               <p class="text-muted small mb-0">Montag bis Freitag von 9 bis 18 Uhr erreichbar.</p>
             </div>
           </div>

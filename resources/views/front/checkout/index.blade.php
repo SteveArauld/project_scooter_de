@@ -185,6 +185,12 @@
                 <div class="d-flex justify-content-between fw-bold fs-5 mb-4">
                   <span>Gesamt</span><span data-cart-total>0,00 €</span>
                 </div>
+                <div id="preorderNotice" class="alert alert-warning small py-2 px-3 d-none" role="status">
+                  <span class="fw-semibold d-block">Ihre Bestellung enthält Vorbestellungen.</span>
+                  Vorbestellte Artikel werden erst ab dem jeweils angegebenen Erscheinungsdatum
+                  versandt. Bereits lieferbare Artikel senden wir sofort – die Bestellung wird bei
+                  Bedarf in Teillieferungen aufgeteilt, ohne Mehrkosten für Sie.
+                </div>
                 <button type="submit" class="btn btn-primary w-100" id="placeOrderBtn">Bestellung aufgeben</button>
                 <p class="small text-muted mt-3 mb-0">
                     Mit dem Absenden Ihrer Bestellung erkennen Sie unsere
@@ -245,10 +251,21 @@
     var items = Cart.items();
     var box = document.getElementById('summaryItems');
     box.innerHTML = items.map(function (i) {
+      var release = '';
+      if (i.preorder) {
+        var d = new Date(i.preorder);
+        var label = isNaN(d.getTime()) ? i.preorder
+          : d.toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' });
+        release = '<div class="mt-1"><span class="badge bg-warning text-dark">Vorbestellung</span>' +
+          '<small class="text-muted ms-2">Lieferbar ab ' + label + '</small></div>';
+      }
       return '<li class="list-group-item px-0 d-flex justify-content-between">' +
-        '<span class="small">' + i.title + ' <span class="text-muted">× ' + i.qty + '</span></span>' +
-        '<span class="fw-medium small">' + euroFormat(i.price * i.qty) + '</span></li>';
+        '<span class="small">' + i.title + ' <span class="text-muted">× ' + i.qty + '</span>' + release + '</span>' +
+        '<span class="fw-medium small text-nowrap ms-2">' + euroFormat(i.price * i.qty) + '</span></li>';
     }).join('');
+    var hasPreorder = items.some(function (i) { return !!i.preorder; });
+    var notice = document.getElementById('preorderNotice');
+    if (notice) notice.classList.toggle('d-none', !hasPreorder);
     document.getElementById('itemsField').value = JSON.stringify(items.map(function (i) {
       return { slug: i.slug, qty: i.qty };
     }));

@@ -63,7 +63,12 @@ class FAQController extends Controller
                     ],
                     [
                         'question' => 'Welche Zahlungsarten werden akzeptiert?',
-                        'answer'   => 'Sie können per Vorkasse überweisen, auf Rechnung kaufen (für Bestands- und Gewerbekunden) oder bei Abholung in einer unserer Filialen bar bzw. mit EC-Karte bezahlen. Eine Übersicht finden Sie auf der Seite Zahlungsarten.',
+                        // Quelle der Wahrheit ist config/shop.php – damit bleibt die Antwort
+                        // automatisch deckungsgleich mit Kasse, Footer und Zahlungsarten-Seite.
+                        'answer'   => 'Wir akzeptieren: '
+                            . implode(', ', array_column(config('shop.payment_methods', []), 'label'))
+                            . '. Es fallen keine zusätzlichen Zahlungsgebühren an. '
+                            . 'Eine Übersicht mit allen Details finden Sie auf der Seite Zahlungsarten.',
                     ],
                     [
                         'question' => 'Sind die Preise inklusive Mehrwertsteuer?',
