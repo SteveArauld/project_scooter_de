@@ -25,7 +25,7 @@ class GenerateMerchantFeed extends Command
     public function handle(): int
     {
         $products = Product::query()
-            ->where('price', '>', 0)
+            ->shopVisible()
             ->orderBy('id')
             ->get();
 

@@ -21,7 +21,7 @@ class MerchantFeedController extends Controller
     public function index(Request $request): Response
     {
         $products = Product::query()
-            ->where('price', '>', 0)          // Artikel ohne Preis lehnt Google ab
+            ->shopVisible()                   // exakt die im Shop auffindbaren Artikel
             ->orderBy('id')
             ->get();
 

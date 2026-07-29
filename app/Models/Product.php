@@ -88,6 +88,26 @@ class Product extends Model
         return $slug ? $query->where('category', $slug) : $query;
     }
 
+    /**
+     * Genau die Produkte, die auch im Shop auffindbar sind – Grundlage für
+     * den Merchant-Feed und die Sitemap. Kriterien:
+     *  - sichtbare Kategorie (zusätzlich zum globalen Scope, falls dieser
+     *    einmal deaktiviert wird)
+     *  - aufrufbare Produktseite (Slug vorhanden)
+     *  - echter Preis (Artikel ohne Preis lehnt Google ab)
+     *  - mindestens ein echtes Produktbild (kein Platzhalter im Feed)
+     */
+    public function scopeShopVisible($query)
+    {
+        return $query
+            ->whereIn('category', array_keys(self::CATEGORIES))
+            ->whereNotNull('slug')
+            ->where('slug', '!=', '')
+            ->where('price', '>', 0)
+            ->whereNotNull('images')
+            ->whereNotIn('images', ['[]', '""', 'null']);
+    }
+
     public function scopeOnSale($query)
     {
         return $query->where('on_sale', true);
