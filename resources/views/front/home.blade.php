@@ -117,17 +117,25 @@
         @foreach($deals as $product)
         @php
           $t = $product->getTranslation('title', 'de');
-          $promo = (float) $product->price;              // Aktionspreis
-          $discount = 15;                                 // Rabatt in %
-          $orig = round($promo / (1 - $discount / 100));  // Originalpreis
+          /*
+            Aktions- und Streichpreis kommen ausschließlich aus den Produktdaten
+            (price / list_price) – dieselbe Quelle wie g:price und g:sale_price
+            im Merchant-Feed. Ohne hinterlegten Streichpreis wird nur der
+            reguläre Preis ohne Rabatt-Badge angezeigt.
+          */
+          $promo = (float) $product->price;
+          $discount = $product->discount_percent;
+          $orig = $product->is_discounted ? (float) $product->list_price : null;
         @endphp
         <div class="col">
           <div class="card card-product h-100">
             <div class="card-body">
               <div class="text-center position-relative">
+@if($discount)
                 <div class="position-absolute top-0 start-0">
                   <span class="badge bg-danger">-{{ $discount }}%</span>
                 </div>
+@endif
                 <a href="{{ route('products.show', $product->slug) }}">
                   <img src="{{ $product->main_image }}" alt="{{ $t }}" class="mb-3 img-fluid" style="height:160px;object-fit:contain" loading="lazy" />
                 </a>
@@ -144,8 +152,10 @@
               <div class="text-small mb-1"><small class="text-muted">{{ $product->category_label }}</small></div>
               <h3 class="fs-6"><a href="{{ route('products.show', $product->slug) }}" class="text-inherit text-decoration-none">{{ \Illuminate\Support\Str::limit($t, 45) }}</a></h3>
               <div class="mt-2">
-                <span class="text-danger fw-bold">{{ number_format($promo, 2, ',', '.') }} €</span>
+                <span class="{{ $orig ? 'text-danger' : 'text-dark' }} fw-bold">{{ number_format($promo, 2, ',', '.') }} €</span>
+@if($orig)
                 <span class="text-decoration-line-through text-muted small ms-1">{{ number_format($orig, 2, ',', '.') }} €</span>
+@endif
                 <div><small class="text-muted">inkl. MwSt., kostenloser Versand</small></div>
               </div>
               <div class="d-grid mt-3">

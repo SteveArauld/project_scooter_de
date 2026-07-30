@@ -128,7 +128,11 @@
             @if($product->brand)<p class="text-muted mb-3">Marke: <strong>{{ $product->brand }}</strong></p>@endif
 
             <div class="fs-3 mb-3">
-              <span class="fw-bold text-dark">{{ number_format((float) $product->price, 2, ',', '.') }} €</span>
+              <span class="fw-bold {{ $product->is_discounted ? 'text-danger' : 'text-dark' }}">{{ number_format((float) $product->price, 2, ',', '.') }} €</span>
+              @if($product->is_discounted)
+              <span class="fs-5 text-decoration-line-through text-muted ms-2">{{ number_format((float) $product->list_price, 2, ',', '.') }} €</span>
+              <span class="badge bg-danger align-middle ms-1">-{{ $product->discount_percent }}%</span>
+              @endif
               <span class="fs-6 text-muted ms-2">inkl. MwSt.</span>
             </div>
 

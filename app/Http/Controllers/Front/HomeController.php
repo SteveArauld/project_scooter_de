@@ -22,11 +22,25 @@ class HomeController extends Controller
             ];
         }
 
-        // Tagesangebote: 3 echte Aktionsartikel (Quelle: Kategorie "Sale")
-        $deals = Product::onSale()->inRandomOrder()->take(3)->get();
-        if ($deals->count() < 3) {
+        /*
+         | Tagesangebote: zuerst Artikel mit echtem, hinterlegtem Streichpreis –
+         | nur diese dürfen mit Rabatt-Badge beworben werden und liefern im
+         | Merchant-Feed ein g:sale_price. Reicht das nicht für drei Kacheln,
+         | wird mit Aktionsartikeln und zuletzt mit beliebigen Artikeln
+         | aufgefüllt; die zeigen dann schlicht ihren regulären Preis.
+         */
+        $deals = Product::discounted()->inRandomOrder()->take(3)->get();
+
+        foreach ([Product::onSale(), Product::query()] as $fallback) {
+            if ($deals->count() >= 3) {
+                break;
+            }
+
             $deals = $deals->concat(
-                Product::whereNotIn('id', $deals->pluck('id'))->inRandomOrder()->take(3 - $deals->count())->get()
+                $fallback->whereNotIn('id', $deals->pluck('id'))
+                    ->inRandomOrder()
+                    ->take(3 - $deals->count())
+                    ->get()
             );
         }
 

@@ -14,7 +14,16 @@
     $title = $product->getTranslation('title', 'de');
     $description = $product->plainDescription(4900) ?: $title;
     $images = $product->imageUrls();
-    $price = number_format((float) $product->price, 2, '.', '') . ' EUR';
+    /*
+     | g:price muss immer den regulären Preis tragen. Ist der Artikel im Shop
+     | reduziert (Streichpreis hinterlegt), kommt der Aktionspreis zusätzlich
+     | als g:sale_price dazu – sonst beanstandet das Merchant Center die
+     | Abweichung zwischen Landingpage und Feed.
+     */
+    $price = number_format($product->regular_price, 2, '.', '') . ' EUR';
+    $salePrice = $product->sale_price !== null
+        ? number_format($product->sale_price, 2, '.', '') . ' EUR'
+        : null;
 @endphp
     <item>
       <g:id>{{ $product->id }}</g:id>
@@ -32,6 +41,9 @@
       <g:availability_date>{{ $product->release_date->toIso8601String() }}</g:availability_date>
 @endif
       <g:price>{{ $price }}</g:price>
+@if($salePrice)
+      <g:sale_price>{{ $salePrice }}</g:sale_price>
+@endif
 @if($product->brand)
       <g:brand>{{ $product->brand }}</g:brand>
 @endif

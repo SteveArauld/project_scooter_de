@@ -18,6 +18,7 @@ class Product extends Model
         'images'         => 'array',
         'raw_categories' => 'array',
         'price'          => 'decimal:2',
+        'list_price'     => 'decimal:2',
         'is_featured'    => 'boolean',
         'on_sale'        => 'boolean',
     ];
@@ -111,6 +112,46 @@ class Product extends Model
     public function scopeOnSale($query)
     {
         return $query->where('on_sale', true);
+    }
+
+    /**
+     * Artikel mit aktiver Preisaktion: ein regulärer Preis (Streichpreis) ist
+     * hinterlegt und liegt über dem aktuell verlangten Preis.
+     *
+     * Einzige Quelle der Wahrheit für den durchgestrichenen Preis auf der
+     * Website UND für g:price / g:sale_price im Merchant-Feed – dadurch können
+     * Shop und Feed nicht auseinanderlaufen.
+     */
+    public function scopeDiscounted($query)
+    {
+        return $query->whereNotNull('list_price')->whereColumn('list_price', '>', 'price');
+    }
+
+    public function getIsDiscountedAttribute(): bool
+    {
+        return $this->list_price !== null && (float) $this->list_price > (float) $this->price;
+    }
+
+    /** Regulärer Preis (= Streichpreis bei Aktion, sonst schlicht der Preis). */
+    public function getRegularPriceAttribute(): float
+    {
+        return $this->is_discounted ? (float) $this->list_price : (float) $this->price;
+    }
+
+    /** Aktionspreis oder null, wenn der Artikel nicht reduziert ist. */
+    public function getSalePriceAttribute(): ?float
+    {
+        return $this->is_discounted ? (float) $this->price : null;
+    }
+
+    /** Gerundeter Rabatt in Prozent (für das Badge), null ohne Aktion. */
+    public function getDiscountPercentAttribute(): ?int
+    {
+        if (!$this->is_discounted) {
+            return null;
+        }
+
+        return (int) round((1 - (float) $this->price / (float) $this->list_price) * 100);
     }
 
     public function getSubcategoryLabelAttribute(): string

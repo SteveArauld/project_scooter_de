@@ -5,7 +5,9 @@
   <div class="card card-product h-100">
     <div class="card-body">
       <div class="text-center position-relative">
-        @if($product->on_sale)
+        @if($product->is_discounted)
+          <div class="position-absolute top-0 start-0"><span class="badge bg-danger">-{{ $product->discount_percent }}%</span></div>
+        @elseif($product->on_sale)
           <div class="position-absolute top-0 start-0"><span class="badge bg-danger">Angebot</span></div>
         @endif
         @if($product->is_preorder)
@@ -41,7 +43,10 @@
       @endif
       <div class="d-flex justify-content-between align-items-center mt-3">
         <div>
-          <span class="text-dark fw-bold">{{ number_format((float) $product->price, 2, ',', '.') }} €</span>
+          <span class="{{ $product->is_discounted ? 'text-danger' : 'text-dark' }} fw-bold">{{ number_format((float) $product->price, 2, ',', '.') }} €</span>
+          @if($product->is_discounted)
+          <span class="text-decoration-line-through text-muted small ms-1">{{ number_format((float) $product->list_price, 2, ',', '.') }} €</span>
+          @endif
           @if($product->is_preorder)
           <div><small class="text-warning-emphasis">Erscheint am {{ $product->release_date->translatedFormat('j. F Y') }}</small></div>
           @else

@@ -15,11 +15,22 @@
 return [
     'name'      => env('SHOP_NAME', 'Voltscoot'),
     'legal_name'=> env('SHOP_LEGAL_NAME', 'Voltscoot GmbH'),
-    'ceo'       => env('SHOP_CEO', 'Max Mustermann'),
+    /*
+     | TODO(Impressum): echte Werte in der .env hinterlegen – siehe SHOP_CEO,
+     | SHOP_REGISTER_COURT, SHOP_REGISTER_NO, SHOP_VAT_ID und SHOP_STREET/ZIP/CITY.
+     |
+     | Diese Felder haben BEWUSST keinen Standardwert mehr: bis zur Auslieferung
+     | standen hier erfundene Angaben ("Max Mustermann", "HRB 123456 B",
+     | "DE123456789"), die ohne .env-Eintrag live im Impressum erschienen sind.
+     | Falsche Pflichtangaben nach § 5 DDG sind abmahnfähig und ein Ablehnungs-
+     | grund im Merchant Center – ein leeres Feld ist das kleinere Übel.
+     | "php artisan shop:check-compliance" schlägt fehl, solange etwas fehlt.
+     */
+    'ceo'       => env('SHOP_CEO', ''),
 
-    'street'    => env('SHOP_STREET', 'Friedrichstraße 100'),
-    'zip'       => env('SHOP_ZIP', '10117'),
-    'city'      => env('SHOP_CITY', 'Berlin'),
+    'street'    => env('SHOP_STREET', ''),
+    'zip'       => env('SHOP_ZIP', ''),
+    'city'      => env('SHOP_CITY', ''),
     'country'   => env('SHOP_COUNTRY', 'Deutschland'),
 
     'email'     => env('SHOP_EMAIL', 'kontakt@voltscoot.de'),
@@ -49,9 +60,10 @@ return [
     // Postfach, das die Bestelleingänge erhält
     'order_email' => env('ORDER_ADMIN_EMAIL', env('SHOP_EMAIL', 'kontakt@voltscoot.de')),
 
-    'register_court' => env('SHOP_REGISTER_COURT', 'Amtsgericht Berlin-Charlottenburg'),
-    'register_no'    => env('SHOP_REGISTER_NO', 'HRB 123456 B'),
-    'vat_id'         => env('SHOP_VAT_ID', 'DE123456789'),
+    // TODO(Impressum): echte Registerdaten – siehe Hinweis bei 'ceo'.
+    'register_court' => env('SHOP_REGISTER_COURT', ''),
+    'register_no'    => env('SHOP_REGISTER_NO', ''),
+    'vat_id'         => env('SHOP_VAT_ID', ''),
 
     // Versand & Rückgabe
     'free_shipping_from' => 100,      // Euro

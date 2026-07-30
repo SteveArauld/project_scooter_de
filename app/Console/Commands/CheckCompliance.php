@@ -27,6 +27,18 @@ class CheckCompliance extends Command
         'shop.register_no'    => ['HRB 123456 B', ''],
         'shop.register_court' => [''],
         'shop.vat_id'         => ['DE123456789', ''],
+        'shop.street'         => [''],
+        'shop.zip'            => [''],
+        'shop.city'           => [''],
+    ];
+
+    /**
+     * Werte, die aus der Auslieferung stammen und plausibel echt sein KÖNNEN.
+     * Sie blockieren deshalb nicht, sondern verlangen nur eine Bestätigung.
+     */
+    private const SUSPECT = [
+        'shop.register_court' => 'Amtsgericht Berlin-Charlottenburg',
+        'shop.street'         => 'Friedrichstraße 100',
     ];
 
     public function handle(): int
@@ -41,6 +53,16 @@ class CheckCompliance extends Command
                 $blocking++;
             } else {
                 $this->line(sprintf('  ok      %s = %s', $key, $value));
+            }
+        }
+
+        foreach (self::SUSPECT as $key => $shipped) {
+            if (trim((string) config($key)) === $shipped) {
+                $this->warn(sprintf(
+                    '  HINWEIS %s steht noch auf dem Auslieferungswert "%s" – bitte bestätigen.',
+                    $key,
+                    $shipped
+                ));
             }
         }
 
@@ -63,6 +85,43 @@ class CheckCompliance extends Command
 
         if (preg_replace('/\D+/', '', (string) config('shop.whatsapp')) !== $digits) {
             $this->warn('  HINWEIS WhatsApp-Nummer weicht von der Telefonnummer ab.');
+        }
+
+        $this->newLine();
+        $this->info('== Aktionspreise (g:sale_price) ==');
+        $discounted = Product::query()->shopVisible()->discounted()->get();
+
+        if ($discounted->isEmpty()) {
+            $this->line('  ok      Kein Artikel führt einen Streichpreis.');
+        } else {
+            $this->line(sprintf('  %d Artikel liefern g:price + g:sale_price:', $discounted->count()));
+            foreach ($discounted as $p) {
+                $this->line(sprintf(
+                    '    %8.2f -> %8.2f EUR  (-%2d%%)  %s',
+                    $p->regular_price,
+                    $p->sale_price,
+                    $p->discount_percent,
+                    \Illuminate\Support\Str::limit($p->getTranslation('title', 'de'), 50)
+                ));
+            }
+        }
+
+        // Streichpreis <= Preis wäre ein sinnloser "Rabatt" und würde von
+        // Google abgelehnt; solche Datensätze fallen sonst still durchs Raster.
+        $badListPrice = Product::query()
+            ->whereNotNull('list_price')
+            ->whereColumn('list_price', '<=', 'price')
+            ->get();
+
+        if ($badListPrice->isNotEmpty()) {
+            $this->error(sprintf(
+                '  FEHLER  %d Artikel haben einen Streichpreis <= Verkaufspreis:',
+                $badListPrice->count()
+            ));
+            foreach ($badListPrice as $p) {
+                $this->error(sprintf('    %s  (%s statt %s)', $p->slug, $p->price, $p->list_price));
+            }
+            $blocking++;
         }
 
         $this->newLine();
